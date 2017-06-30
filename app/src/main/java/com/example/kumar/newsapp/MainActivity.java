@@ -1,6 +1,8 @@
 package com.example.kumar.newsapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.kumar.newsapp.adapters.MainViewAdapter;
 import com.example.kumar.newsapp.models.ListItems;
@@ -30,13 +33,13 @@ import java.util.List;
 
 import static android.support.v4.view.MenuItemCompat.getActionView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
-   private ProgressBar mLoadingIndicator;
-
+    private ProgressBar mLoadingIndicator;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<ListItems> items;
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-
     public class NewsAppQueryTask extends AsyncTask<URL, Void, String> {
 
         @Override
@@ -121,19 +122,33 @@ public class MainActivity extends AppCompatActivity {
                     items = new ArrayList<>(list.length());
                     for(int i=0; i< list.length(); i++){
                         JSONObject o = list.getJSONObject(i);
-                        ListItems item = new ListItems(o.getString("title"), o.getString("description"), o.getString("urlToImage"));
+                        ListItems item = new ListItems(o.getString("title"), o.getString("description"), o.getString("urlToImage"), o.getString("url"));
                         items.add(item);
 
                         Log.d("onPostExecute :: Title", o.getString("title"));
                     }
                     Log.d("onPostExecute", String.valueOf(items.size()));
 
-                    adapter = new MainViewAdapter(items, getApplicationContext());
+                    adapter = new MainViewAdapter(items, getApplicationContext(), new MainViewAdapter.ItemClickListener() {
+                        @Override
+                        public void onItemClick(int clickedItemIndex) {
+                            String url = items.get(clickedItemIndex).getUrl();
+                            openWebPage(url);
+                        }
+                    });
                     recyclerView.setAdapter(adapter);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+
+        public void openWebPage(String url) {
+            Uri webpage = Uri.parse(url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
             }
         }
     }

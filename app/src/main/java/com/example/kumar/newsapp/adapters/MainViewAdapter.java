@@ -20,10 +20,16 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
 
     private List<ListItems> items;
     private Context context;
+    private ItemClickListener listener;
 
-    public MainViewAdapter(List<ListItems> items, Context context) {
+    public MainViewAdapter(List<ListItems> items, Context context, ItemClickListener listener) {
         this.items = items;
         this.context = context;
+        this.listener = listener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(int clickedItemIndex);
     }
 
     @Override
@@ -44,16 +50,24 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView textViewTitle;
         private TextView textViewDescription;
+
 
         public ViewHolder(View itemView) {
 
             super(itemView);
             textViewTitle = (TextView) itemView.findViewById(R.id.newsTitle);
             textViewDescription = (TextView) itemView.findViewById(R.id.description);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int pos = getAdapterPosition();
+            listener.onItemClick(pos);
         }
     }
 }
