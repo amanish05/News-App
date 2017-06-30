@@ -1,6 +1,5 @@
 package com.example.kumar.newsapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,14 +12,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.kumar.newsapp.adapters.MainViewAdapter;
-import com.example.kumar.newsapp.models.ListItems;
+import com.example.kumar.newsapp.models.NewsItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,15 +28,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v4.view.MenuItemCompat.getActionView;
-
 public class MainActivity extends AppCompatActivity{
 
     private ProgressBar mLoadingIndicator;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private List<ListItems> items;
-    private Toast mToast;
+    private List<NewsItem> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +116,11 @@ public class MainActivity extends AppCompatActivity{
                     items = new ArrayList<>(list.length());
                     for(int i=0; i< list.length(); i++){
                         JSONObject o = list.getJSONObject(i);
-                        ListItems item = new ListItems(o.getString("title"), o.getString("description"), o.getString("urlToImage"), o.getString("url"));
+                        NewsItem item = new NewsItem(o.getString("title"),
+                                o.getString("description"),
+                                o.getString("urlToImage"),
+                                o.getString("url"),
+                                o.getString("publishedAt"));
                         items.add(item);
 
                         Log.d("onPostExecute :: Title", o.getString("title"));

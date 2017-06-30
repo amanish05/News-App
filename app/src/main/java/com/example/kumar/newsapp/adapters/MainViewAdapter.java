@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.kumar.newsapp.R;
-import com.example.kumar.newsapp.models.ListItems;
+import com.example.kumar.newsapp.models.NewsItem;
 
 import java.util.List;
 
@@ -18,11 +18,11 @@ import java.util.List;
 
 public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHolder>{
 
-    private List<ListItems> items;
+    private List<NewsItem> items;
     private Context context;
     private ItemClickListener listener;
 
-    public MainViewAdapter(List<ListItems> items, Context context, ItemClickListener listener) {
+    public MainViewAdapter(List<NewsItem> items, Context context, ItemClickListener listener) {
         this.items = items;
         this.context = context;
         this.listener = listener;
@@ -40,9 +40,10 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ListItems item = items.get(position);
+        NewsItem item = items.get(position);
         holder.textViewTitle.setText(item.getTitle());
         holder.textViewDescription.setText(item.getDescription());
+        holder.textViewPublishedAt.setText(item.getPublishedAt());
     }
 
     @Override
@@ -54,6 +55,7 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
 
         private TextView textViewTitle;
         private TextView textViewDescription;
+        private TextView textViewPublishedAt;
 
 
         public ViewHolder(View itemView) {
@@ -61,6 +63,7 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
             super(itemView);
             textViewTitle = (TextView) itemView.findViewById(R.id.newsTitle);
             textViewDescription = (TextView) itemView.findViewById(R.id.description);
+            textViewPublishedAt = (TextView) itemView.findViewById(R.id.publishedAt);
             itemView.setOnClickListener(this);
         }
 
