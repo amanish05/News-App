@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kumar.newsapp.R;
 import com.example.kumar.newsapp.models.NewsItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
         holder.textViewTitle.setText(item.getTitle());
         holder.textViewDescription.setText(item.getDescription());
         holder.textViewPublishedAt.setText(item.getPublishedAt());
+        Picasso.with(context).load(item.getImageUrl()).into(holder.imageView);
     }
 
     @Override
@@ -56,6 +59,7 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
         private TextView textViewTitle;
         private TextView textViewDescription;
         private TextView textViewPublishedAt;
+        private ImageView imageView;
 
 
         public ViewHolder(View itemView) {
@@ -64,6 +68,7 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
             textViewTitle = (TextView) itemView.findViewById(R.id.newsTitle);
             textViewDescription = (TextView) itemView.findViewById(R.id.description);
             textViewPublishedAt = (TextView) itemView.findViewById(R.id.publishedAt);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
             itemView.setOnClickListener(this);
         }
 
