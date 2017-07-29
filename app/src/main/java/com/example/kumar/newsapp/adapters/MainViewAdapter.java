@@ -60,7 +60,7 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
         holder.textViewTitle.setText(newsCursor.getTitle());
         holder.textViewDescription.setText(newsCursor.getDescription());
 
-        loadImageNews(holder.imageView.getContext(), newsCursor.getImageUrl(),
+        loadNews(holder.imageView.getContext(), newsCursor.getImageUrl(),
                 holder.imageView);
 
         try {
@@ -73,7 +73,7 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
     }
 
     //Using Picasso to load the image
-    private void loadImageNews(Context context, String imageU,ImageView imageV) {
+    private void loadNews(Context context, String imageU,ImageView imageV) {
         Picasso.with(context).load(imageU).into(imageV);
     }
 
